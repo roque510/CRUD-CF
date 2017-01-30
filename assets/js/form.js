@@ -23,7 +23,49 @@
   	errorClass: "form-invalid"
   });*/
 
- //Sign-Out
+ 
+  // Create Submission
+ $("#createForm").on('submit', function (e) {
+
+          e.preventDefault();
+
+          $.ajax({
+              
+            type: 'post',
+            url: '/Controller/create.cfm',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: new FormData(this),
+            dataType: "json",
+            //beforeSend: function() {
+            //$('#response').html("<img src='img/loading.gif' />");
+            //$('#modal1').openModal();
+            //},  
+            success: function (data) {
+
+             //$('#modal1').closeModal();
+              swal({
+                title: 'Great!',
+                text: data[0],
+                type: "success",
+                timer: 2000
+              })
+             
+             
+              
+
+
+            },
+            error: function (e){
+             swal(data[1]);
+            }
+          });
+
+        });
+
+
+//Sign-Out
  $(".sign-out").on('click', function(e) {
 
         e.preventDefault();
@@ -37,7 +79,7 @@
                 title: 'Good bye!',
                 text: "Have a nice Day",
                 type: "success",
-                timer: 2000
+                timer: 1000
               }).then(
                 function () {},
                 // handling the promise rejection
@@ -55,7 +97,7 @@
 
  });
   
-	// Form Submission
+	// Login Submission
  $("#login-form").on('submit', function (e) {
 
           e.preventDefault();
@@ -80,7 +122,8 @@
                 title: 'Greetings!',
                 text: data[1],
                 type: "success",
-                timer: 2000
+                timer: 2000,
+                showConfirmButton: false,
               }).then(
                 function () {},
                 // handling the promise rejection

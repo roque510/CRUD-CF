@@ -4,11 +4,12 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
 body {
-  width: 100%;
+  width: 100% !important;
   height: 100%;
   font-family: "Lora", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: white;
   background-color: black;
+  overflow-x: hidden !important;
 }
 html {
   width: 100%;

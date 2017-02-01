@@ -46,6 +46,19 @@
 			SELECT * FROM users where user = "#user#"
 	</cfquery> 
 	<cfreturn usrQuery > 
-</cffunction>
+</cffunction> 
+
+<cffunction name="updateUsr"> 
+	<cfargument name="id" type="string" required="true">
+	<cfargument name="user" type="string" required="true">
+	<cfargument name="name" type="string" required="true">
+	<cfargument name="status" type="string" required="true">
+	<cfargument name="balance" type="string" required="true">
+
+	<cfquery result="qryResult" name="usrQuery" datasource="crud" maxrows="1" >
+			UPDATE users SET `User` = "#user#",`name` = "#name#", `status` = "#status#", `balance` = "#balance#" WHERE `Id` = "#id#";
+	</cfquery> 
+	<cfreturn qryResult.RecordCount > 
+</cffunction> 
 
 </cfcomponent>

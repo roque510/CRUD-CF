@@ -23,6 +23,32 @@
   	errorClass: "form-invalid"
   });*/
 
+  $("#updateForm").on('submit', function (e){
+    
+    e.preventDefault();
+    $.ajax({
+      type: 'post',
+            url: '/Controller/updateF.cfm',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: new FormData(this),
+            dataType: "json",            
+            success: function (data) {
+              if(data[3])
+                swal("Success","User updated","success");
+              else
+                swal("oops..","Sorry we can´t update this user.","error")
+
+            },
+            error: function (e){
+              swal("not working");
+            }
+
+    });//ajax
+
+  });
+
   $("#querySearch").keypress(function (e) {
  var key = e.which;
  if(key == 13)  // the enter key code
@@ -45,6 +71,7 @@ var code = $("#querySearch").val();
 
               let cubes = data[3]["DATA"];
               if (cubes.length === 0) {
+                  $("#idUpdate").val(" ");
                   $("#userUpdate").val(" ");
                   $("#nameUpdate").val(" ");
                   $("#statusUpdate").val(" ");
@@ -54,6 +81,7 @@ var code = $("#querySearch").val();
               }
               else
                 for(var i = 0; i < cubes.length; i++) {                
+                  $("#idUpdate").val(cubes[i][0]);
                   $("#userUpdate").val(cubes[i][1]);
                   $("#nameUpdate").val(cubes[i][3]);
                   $("#statusUpdate").val(cubes[i][5]);
@@ -68,6 +96,51 @@ var code = $("#querySearch").val();
           });
 
 
+  });
+
+    $("#searchDelete").keypress(function (e) {
+ var key = e.which;
+ if(key == 13)  // the enter key code
+  {
+    $("#btnsearchDelete").click();
+    return false;  
+  }
+}); 
+
+  $("#btnsearchDelete").on('click', function(e){
+    var code = $("#searchDelete").val();
+    e.preventDefault();
+          $.ajax({
+              
+            type: 'post',
+            url: '/Controller/update.cfm',
+            data: {query: code}, 
+            dataType: "json",            
+            success: function (data) {
+              $("#deleteContainer").empty();
+              let cubes = data[3]["DATA"];
+              if (cubes.length === 0) {
+                  
+
+                  swal({title: "oops.",text: "Sorry... user not found", type: "info"})
+              }
+              else
+                for(var i = 0; i < cubes.length; i++) {
+                  
+                  $("#deleteContainer").append('<div class="media col-lg-8"><div class="media-left"><a href="#"><img class="media-object" src="https://placeholdit.imgix.net/~text?txtsize=15&txt=64%C3%9764&w=64&h=64" alt="64x64"></a></div><div style="text-align: left;" class=" media-body"><h4 class="media-heading">'+cubes[i][1]+'</h4>Nombre completo del usuario es : '+cubes[i][3]+'</div></div><button id="btndel" type="button"  idUsr="'+ cubes[i][0]+'" class="btn btndel btn-default btn-lg col-lg-4"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>');
+                  
+                }
+
+
+            },
+            error: function (e){
+             swal(data[1]);
+            }
+          });
+  });
+
+  $("#deleteContainer").on('click', 'button', function(e){
+    alert($("#deleteContainer").children("button").attr("idUsr"));
   });
 
  $("#readRefresh").on('click', function (e) {

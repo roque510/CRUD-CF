@@ -20,35 +20,35 @@
                 <br>
 
                 
-              <form class="form-horizontal">
+              <form id="updateForm" method="POST" action="/Controller/updateF.cfm" enctype="multipart/form-data" class="form-horizontal">
                   <div class="form-group">
                     <label for="UserUpdate" class="col-sm-2 control-label">User</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="userUpdate" placeholder="User">
+                      <input type="text" name="userUpdate" class="form-control" id="userUpdate" placeholder="User">
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="NameUpdate" class="col-sm-2 control-label">Name</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="nameUpdate" placeholder="Name">
+                      <input type="text" name="nameUpdate" class="form-control" id="nameUpdate" placeholder="Name">
                     </div>
                   </div>
 
                   <div class="form-group">
                     <label for="NameUpdate" class="col-sm-2 control-label">status</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="statusUpdate" placeholder="status">
+                      <input type="text" name="statusUpdate" class="form-control" id="statusUpdate" placeholder="status">
                     </div>
                   </div>
 
                   <div class="form-group">
                     <label for="NameUpdate" class="col-sm-2 control-label">Balance</label>
                     <div class="col-sm-8">
-                      <input type="numeric" class="form-control" id="balanceUpdate">
+                      <input type="numeric" name="balanceUpdate" class="form-control" id="balanceUpdate">
                     </div>
                   </div>
 
-
+                    <input type="hidden" name="idUpdate" class="form-control" id="idUpdate" placeholder="User">
 
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">

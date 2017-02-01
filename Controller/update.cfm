@@ -1,36 +1,21 @@
     <cfinclude template="/Model/userDAO.cfc" />
     <cfscript>
-        user = form.user;
-        pwd = form.pwd;
-        name = form.name;
         title = "oh Oh...";
         text = "User was not added to database, please check with an administrator of this webpage.";
         type = "error";
 
-        result = addUsr(user,pwd,name);
+        result = getUsr(FORM.query);
 
     </cfscript>
-
-    <cfif result IS True>
-    <cfscript>
-        title = "Excelent!";
-        text = name & " was successfully added.";
-        type = "success";
-    </cfscript>
-    
-    
-    </cfif>
-
-
-
+	
 
     <cfset faq = ArrayNew(1)>
     <cfset ArrayAppend(faq, title)>
     <cfset ArrayAppend(faq, text)>
     <cfset ArrayAppend(faq, type)>
+    <cfset ArrayAppend(faq, result)>
 
 
 
     <cfset json = SerializeJSON(faq) />
     <cfoutput>#json#</cfoutput>
-

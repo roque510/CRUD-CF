@@ -7,13 +7,13 @@
                 <div class="row">
                     <div class="col-lg-10 form-group has-success has-feedback">
                       <label class="control-label sr-only" for="inputSuccess5">Hidden label</label>
-                      <input type="text" class="form-control" id="inputSuccess5" aria-describedby="inputSuccess5Status">
+                      <input type="text" name="searchUpdate" class="form-control" id="querySearch" aria-describedby="inputSuccess5Status">
                       <span style="margin-right: 10px;" class="glyphicon glyphicon-search form-control-feedback" aria-hidden="true"></span>
                       
                     </div>
 
                       <div class="col-lg-2 btn-group" role="group">
-                        <button type="button" class="btn btn-default">Search</button>
+                        <button id="btnSearch" type="button" class="btn btn-default">Search</button>
                       </div>
                 </div>
                 
@@ -24,15 +24,31 @@
                   <div class="form-group">
                     <label for="UserUpdate" class="col-sm-2 control-label">User</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="UserUpdate" placeholder="User">
+                      <input type="text" class="form-control" id="userUpdate" placeholder="User">
                     </div>
                   </div>
                   <div class="form-group">
                     <label for="NameUpdate" class="col-sm-2 control-label">Name</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" id="NameUpdate" placeholder="Name">
+                      <input type="text" class="form-control" id="nameUpdate" placeholder="Name">
                     </div>
                   </div>
+
+                  <div class="form-group">
+                    <label for="NameUpdate" class="col-sm-2 control-label">status</label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="statusUpdate" placeholder="status">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="NameUpdate" class="col-sm-2 control-label">Balance</label>
+                    <div class="col-sm-8">
+                      <input type="numeric" class="form-control" id="balanceUpdate">
+                    </div>
+                  </div>
+
+
 
                   <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">

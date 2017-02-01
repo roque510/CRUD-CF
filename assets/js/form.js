@@ -23,7 +23,84 @@
   	errorClass: "form-invalid"
   });*/
 
- 
+  $("#querySearch").keypress(function (e) {
+ var key = e.which;
+ if(key == 13)  // the enter key code
+  {
+    $("#btnSearch").click();
+    return false;  
+  }
+});  
+
+  $("#btnSearch").on('click', function(e){
+var code = $("#querySearch").val();
+    e.preventDefault();
+          $.ajax({
+              
+            type: 'post',
+            url: '/Controller/update.cfm',
+            data: {query: code}, 
+            dataType: "json",            
+            success: function (data) {
+
+              let cubes = data[3]["DATA"];
+              if (cubes.length === 0) {
+                  $("#userUpdate").val(" ");
+                  $("#nameUpdate").val(" ");
+                  $("#statusUpdate").val(" ");
+                  $("#balanceUpdate").val(" ");
+
+                  swal({title: "oops.",text: "Sorry... user not found", type: "info"})
+              }
+              else
+                for(var i = 0; i < cubes.length; i++) {                
+                  $("#userUpdate").val(cubes[i][1]);
+                  $("#nameUpdate").val(cubes[i][3]);
+                  $("#statusUpdate").val(cubes[i][5]);
+                  $("#balanceUpdate").val(cubes[i][6]);
+                }
+
+
+            },
+            error: function (e){
+             swal(data[1]);
+            }
+          });
+
+
+  });
+
+ $("#readRefresh").on('click', function (e) {
+    e.preventDefault();
+          $.ajax({
+              
+            type: 'post',
+            url: '/Controller/read.cfm',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: new FormData(this),
+            dataType: "json",            
+            success: function (data) {
+              
+              $("#readBody").empty();    
+              let cubes = data[3]["DATA"];
+              for(var i = 0; i < cubes.length; i++) {
+                
+                $("#readBody").append('<div class="media"><div class="media-left"><a href="#"><img class="media-object" src="http://www.iconarchive.com/download/i81301/custom-icon-design/mono-business/users.ico" style="width:64px; height:64px; border:2pt solid white;" alt="64x64"></a></div><div style="text-align: left;" class=" media-body"><h4 class="media-heading heading-read ">'+ cubes[i][1] +'</h4>Nombre completo del usuario es : <strong class="name-read">'+ cubes[i][3] +'</strong></div></div>');
+  }
+
+
+              
+             }
+
+             ,
+            error: function (e){
+             swal(data[1]);
+            }
+          });
+ });
+
   // Create Submission
  $("#createForm").on('submit', function (e) {
 
@@ -37,26 +114,15 @@
             contentType: false,
             processData: false,
             data: new FormData(this),
-            dataType: "json",
-            //beforeSend: function() {
-            //$('#response').html("<img src='img/loading.gif' />");
-            //$('#modal1').openModal();
-            //},  
+            dataType: "json",            
             success: function (data) {
-
-             //$('#modal1').closeModal();
+              document.getElementById("createForm").reset();
               swal({
-                title: 'Great!',
-                text: data[0],
-                type: "success",
-                timer: 2000
+                title: data[0],
+                text: data[1],
+                type: data[2]
               })
-             
-             
-              
-
-
-            },
+             },
             error: function (e){
              swal(data[1]);
             }
@@ -119,9 +185,9 @@
 
              //$('#modal1').closeModal();
               swal({
-                title: 'Greetings!',
+                title: data[0],
                 text: data[1],
-                type: "success",
+                type: data[2],
                 timer: 2000,
                 showConfirmButton: false,
               }).then(

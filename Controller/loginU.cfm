@@ -1,15 +1,19 @@
 <cfinclude template="/Model/userDAO.cfc" />
 
 <cfscript>
-	Users = getUsr();
+	
 	validLogin = checkLogin(form.lg_username,form.lg_password);
 	valid = "Sorry... incorrect Username or Password";
+	answer = "error";
+	title = "oh OH..";
 </cfscript>
 
 
 <cfif validLogin IS True>
 	<cfscript>
+		title = "Greetings!";
 		valid = "Welcome " & FORM.lg_username;
+		answer = "success";
 	</cfscript>
 		<!--- Set Session --->
 	
@@ -19,8 +23,9 @@
 </cfif>
 
 <cfset faq = ArrayNew(1)>
-<cfset ArrayAppend(faq, "Welcome "& form.lg_username)>
+<cfset ArrayAppend(faq, title)>
 <cfset ArrayAppend(faq, valid)>
+<cfset ArrayAppend(faq, answer)>
 
 
 

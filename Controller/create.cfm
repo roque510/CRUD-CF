@@ -4,9 +4,11 @@
         pwd = form.pwd;
         name = form.name;
         title = "oh Oh...";
-        text = "User was not added to database, please check with an administrator of this webpage.";
+        text = "This username already exist please choose another one.";
         type = "error";
-
+        result = 0;
+        exist = getUsrRowCount(user);
+        if(!exist)
         result = addUsr(user,pwd,name);
 
     </cfscript>
@@ -33,4 +35,6 @@
 
     <cfset json = SerializeJSON(faq) />
     <cfoutput>#json#</cfoutput>
+    
+
 

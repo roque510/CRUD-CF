@@ -23,6 +23,40 @@
   	errorClass: "form-invalid"
   });*/
 
+  $("#updateForm").on('submit', function (e){
+
+    let validate = true;
+    if($("#userUpdate").val() == ""){
+      validate = false;
+    }
+    
+    e.preventDefault();
+    if(validate)
+    $.ajax({
+      type: 'post',
+            url: '/Controller/updateF.cfm',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: new FormData(this),
+            dataType: "json",            
+            success: function (data) {
+              if(data[3])
+                swal("Success","User updated","success");
+              else
+                swal("oops..","Sorry we can´t update this user.","error")
+
+            },
+            error: function (e){
+              swal("not working");
+            }
+
+    });//ajax
+  else
+    swal("opps...","Sorry you cant leave your username in blank! please try again.","error")
+
+  });
+
   $("#querySearch").keypress(function (e) {
  var key = e.which;
  if(key == 13)  // the enter key code
@@ -45,19 +79,32 @@ var code = $("#querySearch").val();
 
               let cubes = data[3]["DATA"];
               if (cubes.length === 0) {
+                  $("#idUpdate").val(" ");
                   $("#userUpdate").val(" ");
                   $("#nameUpdate").val(" ");
-                  $("#statusUpdate").val(" ");
+                  $("#isadmin").prop('checked', false);
                   $("#balanceUpdate").val(" ");
 
                   swal({title: "oops.",text: "Sorry... user not found", type: "info"})
               }
               else
                 for(var i = 0; i < cubes.length; i++) {                
+                  $("#idUpdate").val(cubes[i][0]);
                   $("#userUpdate").val(cubes[i][1]);
                   $("#nameUpdate").val(cubes[i][3]);
-                  $("#statusUpdate").val(cubes[i][5]);
+                  
+                  if(cubes[i][5]  == true){
+                    
+                    $("#isadmin").prop('checked', true);                    
+                  }
+                  else{
+                    
+                    $("#isadmin").prop('checked', false);
+                  }
+
+
                   $("#balanceUpdate").val(cubes[i][6]);
+                  $("#picture").val(cubes[i][7]);
                 }
 
 
@@ -70,7 +117,74 @@ var code = $("#querySearch").val();
 
   });
 
+    $("#searchDelete").keypress(function (e) {
+ var key = e.which;
+ if(key == 13)  // the enter key code
+  {
+    $("#btnsearchDelete").click();
+    return false;  
+  }
+}); 
+
+  $("#btnsearchDelete").on('click', function(e){
+    var code = $("#searchDelete").val();
+    e.preventDefault();
+          $.ajax({
+              
+            type: 'post',
+            url: '/Controller/update.cfm',
+            data: {query: code}, 
+            dataType: "json",            
+            success: function (data) {
+              $("#deleteContainer").empty();
+              let cubes = data[3]["DATA"];
+              if (cubes.length === 0) {
+                  
+
+                  swal({title: "oops.",text: "Sorry... user not found", type: "info"})
+
+              }
+              else
+                for(var i = 0; i < cubes.length; i++) {
+                  
+                  $("#deleteContainer").append('<div class="media col-md-8"><div class="media-left"><a href="#"><img class="media-object" src="https://d30y9cdsu7xlg0.cloudfront.net/png/17241-200.png" style="width:64px; height:64px;" alt="64x64"></a></div><div style="text-align: left;" class=" media-body"><h4 class="media-heading">'+cubes[i][1]+'</h4>Nombre completo del usuario es : '+cubes[i][3]+'</div></div><button id="btndel" type="button"  idUsr="'+ cubes[i][0]+'" class="btn btndel btn-default btn-lg col-md-4"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Delete</button>');
+                  
+                }
+
+
+            },
+            error: function (e){
+             swal(data[1]);
+            }
+          });
+  });
+
+  $("#deleteContainer").on('click', 'button', function(e){
+    var code = $("#deleteContainer").children("button").attr("idUsr");
+    e.preventDefault();
+    $.ajax({
+      type: 'POST',
+      url: '/Controller/delete.cfm',
+      data: {query: code}, 
+      dataType: "json",            
+      success: function (data) {
+        $("#deleteContainer").empty();
+              if(data[3])
+                swal("Success","User deleted","success");
+              else
+                swal("oops..","Sorry we can´t update this user.","error")
+
+
+      },
+      error: function (e){
+        swal(data[1]);
+      }
+
+    });
+  });
+
  $("#readRefresh").on('click', function (e) {
+  let pic = "https://d30y9cdsu7xlg0.cloudfront.net/png/17241-200.png";
     e.preventDefault();
           $.ajax({
               
@@ -87,7 +201,7 @@ var code = $("#querySearch").val();
               let cubes = data[3]["DATA"];
               for(var i = 0; i < cubes.length; i++) {
                 
-                $("#readBody").append('<div class="media"><div class="media-left"><a href="#"><img class="media-object" src="http://www.iconarchive.com/download/i81301/custom-icon-design/mono-business/users.ico" style="width:64px; height:64px; border:2pt solid white;" alt="64x64"></a></div><div style="text-align: left;" class=" media-body"><h4 class="media-heading heading-read ">'+ cubes[i][1] +'</h4>Nombre completo del usuario es : <strong class="name-read">'+ cubes[i][3] +'</strong></div></div>');
+                $("#readBody").append('<div class="media"><div class="media-left"><a href="#"><img class="media-object" src="'+ cubes[i][7] +'" onerror="this.onerror=null;this.src=`https://d30y9cdsu7xlg0.cloudfront.net/png/17241-200.png`;"  style="width:64px; height:64px; border:2pt solid white;" alt="64x64"></a></div><div style="text-align: left;" class=" media-body"><h4 class="media-heading heading-read ">'+ cubes[i][1] +'</h4>Nombre completo del usuario es : <strong class="name-read">'+ cubes[i][3] +'</strong></div></div>');
   }
 
 
@@ -101,11 +215,61 @@ var code = $("#querySearch").val();
           });
  });
 
+ $("#user").on("keypress", function(e){
+    $('#user').parent().removeClass("has-error");
+    $('#user').parent().addClass("has-success has-feedback");
+    $('#userErrorInput').removeClass("sr-only");
+    $('#userErrorInput').removeClass("glyphicon-remove");
+    $('#userErrorInput').addClass("glyphicon-ok");
+ });
+
+  $("#pwdForm").on("keypress", function(e){
+    $('#pwdForm').parent().removeClass("has-error");
+    $('#pwdForm').parent().addClass("has-success has-feedback");
+    $('#pwdErrorInput').removeClass("sr-only");
+    $('#pwdErrorInput').removeClass("glyphicon-remove");
+    $('#pwdErrorInput').addClass("glyphicon-ok");
+ });
+
+   $("#nameForm").on("keypress", function(e){
+    $('#nameForm').parent().removeClass("has-error");
+    $('#nameForm').parent().addClass("has-success has-feedback");
+    $('#nameErrorInput').removeClass("sr-only");
+    $('#nameErrorInput').removeClass("glyphicon-remove");
+    $('#nameErrorInput').addClass("glyphicon-ok");
+ });
+
   // Create Submission
  $("#createForm").on('submit', function (e) {
+  let validation = true;
+  if ($.trim($('#user').val()) == "") { 
+    $('#user').parent().addClass("has-error has-feedback");
+    $('#userErrorInput').removeClass("sr-only");
+    $('#userErrorInput').removeClass("glyphicon-ok");
+    $('#userErrorInput').addClass("glyphicon-remove");
+
+    validation = false;
+
+  }
+  if ($.trim($('#pwdForm').val()) == "") {
+    $('#pwdForm').parent().addClass("has-error has-feedback");
+    $('#pwdForm').parent().addClass("has-error has-feedback");
+    $('#pwdErrorInput').removeClass("sr-only");
+    $('#pwdErrorInput').addClass("glyphicon-remove");
+    validation = false;
+
+  } 
+    if ($.trim($('#nameForm').val()) == "") {
+    $('#nameForm').parent().addClass("has-error has-feedback");
+    $('#nameForm').parent().addClass("has-error has-feedback");
+    $('#nameErrorInput').removeClass("sr-only");
+    $('#nameErrorInput').addClass("glyphicon-remove");
+    validation = false;
+
+  } 
 
           e.preventDefault();
-
+          if(validation)
           $.ajax({
               
             type: 'post',
@@ -116,6 +280,14 @@ var code = $("#querySearch").val();
             data: new FormData(this),
             dataType: "json",            
             success: function (data) {
+              $('#user').parent().removeClass("has-error");
+              $('#pwdForm').parent().removeClass("has-error");
+              $('#nameForm').parent().removeClass("has-error");
+              $('#user').parent().removeClass("has-success");
+              $('#pwdForm').parent().removeClass("has-success");
+              $('#nameForm').parent().removeClass("has-success");
+
+
               document.getElementById("createForm").reset();
               swal({
                 title: data[0],
@@ -127,6 +299,8 @@ var code = $("#querySearch").val();
              swal(data[1]);
             }
           });
+        else
+          swal("Warning","Please make sure you leave no blank spaces","warning")
 
         });
 
@@ -206,7 +380,7 @@ var code = $("#querySearch").val();
 
             },
             error: function (e){
-             swal(data[1]);
+             swal(e);
             }
           });
 

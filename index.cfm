@@ -24,13 +24,9 @@
     <link href="/assets/css/grayscale.min.css" rel="stylesheet">
     <link href="/assets/css/login.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.3.2/sweetalert2.min.css">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+
 
 </head>
 
@@ -58,6 +54,13 @@
                                 <li class="hidden">
                                     <a href="#page-top"></a>
                                 </li>
+                                <cfif !session.isAdmin>
+                                <li>
+                                    <a class="page-scroll" href="#read">Read</a>
+                                </li>
+                                </cfif>
+
+                                <cfif session.isAdmin>
                                 <li>
                                     <a class="page-scroll" href="#create">Create</a>
                                 </li>
@@ -70,7 +73,9 @@
                                 <li>
                                     <a class="page-scroll" href="#delete">Delete</a>
                                 </li>
-                                <li>
+
+                                </cfif>
+                                                                <li>
                                     <a class="sign-out" href="#">Sign-out</a>
                                 </li>
                                    
@@ -108,13 +113,20 @@
        </div>
     </header>
 
-
     
         <cfif StructKeyExists(session, "user")>
-            <cfinclude template="/View/create.cfm"></cfinclude> 
-            <cfinclude template="/View/read.cfm"></cfinclude> 
-            <cfinclude template="/View/update.cfm"></cfinclude> 
-            <cfinclude template="/View/delete.cfm"></cfinclude>
+            
+            <cfif !session.isAdmin>
+                <cfinclude template="/View/read.cfm"></cfinclude> 
+            </cfif>  
+            <cfif session.isAdmin>
+                <cfinclude template="/View/create.cfm"></cfinclude>
+                <cfinclude template="/View/read.cfm"></cfinclude>
+                <cfinclude template="/View/update.cfm"></cfinclude> 
+                <cfinclude template="/View/delete.cfm"></cfinclude>
+            </cfif>
+             
+
         </cfif>  
 
 
@@ -123,24 +135,18 @@
         <!-- Footer -->
         <footer class="container">
             <div class="text-center">
-                <h2>Copyright &copy; Your Website 2016</h2>
+                <h2>Copyright &copy; <cfoutput>#application.applicationname#</cfoutput> 2017</h2>
             </div>
             
              
-                    <p>Feel free to email us to provide some feedback on our templates, give us suggestions for new templates and themes, or to just say hello!</p>
-                    <p><a href="mailto:feedback@startbootstrap.com">feedback@startbootstrap.com</a>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                    <p><a href="#">lorem@lorem.com</a>
                     </p>
-                    <ul class="list-inline banner-social-buttons">
-                        <li>
-                            <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
-                        </li>
-                        <li>
-                            <a href="https://github.com/IronSummitMedia/startbootstrap" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
-                        </li>
-                        <li>
-                            <a href="https://plus.google.com/+Startbootstrap/posts" class="btn btn-default btn-lg"><i class="fa fa-google-plus fa-fw"></i> <span class="network-name">Google+</span></a>
-                        </li>
-                    </ul>
               
         </footer>
 
@@ -153,14 +159,13 @@
 
     <!-- Plugin JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-
-    <!-- Google Maps API Key - Use your own API key to enable the map feature. More information on the Google Maps API can be found at https://developers.google.com/maps/ -->
     
 
     <!-- Theme JavaScript -->
     <script src="/assets/js/grayscale.min.js"></script>
     <script src="/assets/js/form.js"></script>
     <script src="https://cdn.jsdelivr.net/sweetalert2/6.3.2/sweetalert2.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     
 
 </body>

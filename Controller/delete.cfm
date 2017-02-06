@@ -4,10 +4,13 @@
         text = "User was not added to database, please check with an administrator of this webpage.";
         type = "error";
 
-        result = getUsr(FORM.query);
+        result = delUsr(FORM.query);
 
     </cfscript>
-	
+
+
+
+
 
     <cfset faq = ArrayNew(1)>
     <cfset ArrayAppend(faq, title)>
@@ -19,5 +22,3 @@
 
     <cfset json = SerializeJSON(faq) />
     <cfoutput>#json#</cfoutput>
-
-
